@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Good Goyard | Bio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; cursor: none; }
+        
+        body {
+            background: #000;
+            color: #fff; font-family: 'Inter', sans-serif;
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; overflow: hidden;
+            perspective: 1000px;
+        }
+
+        /* ВИДЕО ФОН */
+        .video-background {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -2; overflow: hidden;
+        }
+        .video-background video {
+            width: 100%; height: 100%; object-fit: cover; filter: brightness(0.35);
+        }
+
+        /* ЧАСТИЦЫ */
+        #particles-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none;
+        }
+
+        /* КУРСОР */
+        #custom-cursor {
+            position: fixed; width: 10px; height: 10px; background: #fff;
+            border-radius: 50%; pointer-events: none; z-index: 999;
+            box-shadow: 0 0 15px #fff; transform: translate(-50%, -50%);
+            transition: transform 0.1s ease-out;
+        }
+
+        /* КОНТЕЙНЕР */
+        .container { 
+            width: 100%; max-width: 420px; text-align: center; z-index: 10; padding: 40px; 
+            background: rgba(0, 0, 0, 0.4); border-radius: 40px;
+            backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: transform 0.1s ease-out;
+            transform-style: preserve-3d;
+        }
+
+        .avatar-container { 
+            width: 120px; height: 120px; border-radius: 50%; 
+            margin: 0 auto 25px; display: flex; align-items: center; 
+            justify-content: center; border: 2px solid rgba(255, 255, 255, 0.15); 
+            overflow: hidden;
+        }
+        .avatar-container img { width: 100%; height: 100%; object-fit: cover; }
+
+        h1 { 
+            font-size: 46px; font-weight: 900; letter-spacing: -2px; margin-bottom: 8px; 
+            background: linear-gradient(270deg, #121212, #2c003e, #001233, #121212);
+            background-size: 400% 400%; -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; display: inline-block;
+            animation: flow 6s ease infinite;
+        }
+
+        .description { color: rgba(255, 255, 255, 0.3); font-size: 10px; text-transform: uppercase; letter-spacing: 6px; margin-bottom: 35px; }
+        
+        /* КНОПКИ */
+        .links-stack { display: flex; flex-direction: column; gap: 16px; }
+        .btn { 
+            position: relative; display: flex; align-items: center; justify-content: center; gap: 12px;
+            padding: 20px; border-radius: 18px; 
+            text-decoration: none; color: #fff; background: rgba(255, 255, 255, 0.05); 
+            border: 1px solid rgba(255, 255, 255, 0.1); font-weight: 700; 
+            transition: 0.4s; overflow: hidden;
+            background-size: 200% 200%;
+        }
+
+        @keyframes flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* ИНДИВИДУАЛЬНЫЕ ЦВЕТА И ПЕРЕЛИВЫ */
+        .btn-guns:hover { 
+            background-image: linear-gradient(270deg, #4b0082, #8a2be2, #4b0082); 
+            animation: flow 3s ease infinite; border-color: #8a2be2;
+        }
+        .btn-tiktok:hover { 
+            background-image: linear-gradient(270deg, #000, #333, #000); 
+            animation: flow 3s ease infinite; border-color: #fff;
+        }
+        .btn-tg:hover { 
+            background-image: linear-gradient(270deg, #0088cc, #24A1DE, #0088cc); 
+            animation: flow 3s ease infinite; border-color: #fff;
+        }
+        .btn-smp:hover { 
+            background-image: linear-gradient(270deg, #ffcc00, #ff6600, #ffcc00); 
+            animation: flow 3s ease infinite; border-color: #fff;
+        }
+        .btn-paypal:hover { 
+            background-image: linear-gradient(270deg, #003087, #009cde, #003087); 
+            animation: flow 3s ease infinite; border-color: #fff;
+        }
+
+        .btn:hover { transform: translateZ(20px) scale(1.03); }
+        .btn i { font-size: 20px; }
+
+        /* ПЛЕЕР */
+        #ui-controls {
+            position: fixed; bottom: 30px; right: 30px;
+            background: rgba(0, 0, 0, 0.85); padding: 15px 25px;
+            border-radius: 100px; border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px); display: flex; align-items: center; gap: 15px; z-index: 100;
+        }
+        #toggle-play { background: none; border: none; color: #fff; font-size: 22px; }
+        #v-slider { -webkit-appearance: none; width: 90px; height: 4px; background: #333; border-radius: 5px; outline: none; }
+        #v-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; background: #fff; border-radius: 50%; }
+
+        .click-wave {
+            position: fixed; border: 2px solid rgba(255,255,255,0.3); border-radius: 50%;
+            pointer-events: none; z-index: 998; animation: wave 0.6s ease-out forwards;
+        }
+        @keyframes wave {
+            from { width: 0; height: 0; opacity: 1; transform: translate(-50%, -50%); }
+            to { width: 150px; height: 150px; opacity: 0; transform: translate(-50%, -50%); }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="particles-canvas"></canvas>
+    <div id="custom-cursor"></div>
+
+    <div class="video-background">
+        <video id="main-video" loop playsinline autoplay muted>
+            <source src="https://www.dropbox.com/scl/fi/perjlptagc68ugtnc3fr2/07078ebb-276e-4d0c-9bd8-3c91ab383f50.mp4?rlkey=824h9buf46gouikqiqkd0a6x5&st=eqbm07ub&dl=1" type="video/mp4">
+        </video>
+    </div>
+
+    <div class="container" id="tilt-box">
+        <div class="avatar-container">
+            <img src="https://i.pinimg.com/736x/b5/aa/e3/b5aae391cf389b15da39ce8d0803682b.jpg" alt="Avatar">
+        </div>
+        
+        <h1>Good Goyard</h1>
+        <p class="description">Official Links</p>
+        
+        <div class="links-stack">
+            <a href="https://guns.lol/goodgoyard" class="btn btn-guns" target="_blank">
+                <i class="fa-solid fa-gun"></i> guns lol
+            </a>
+            <a href="https://www.tiktok.com/@milllok_pve" class="btn btn-tiktok" target="_blank">
+                <i class="fa-brands fa-tiktok"></i> TikTok
+            </a>
+            <a href="https://t.me/domishaila" class="btn btn-tg" target="_blank">
+                <i class="fa-brands fa-telegram"></i> Telegram Channel
+            </a>
+            <a href="https://discord.gg/qaHx3hvUhp" class="btn btn-smp" target="_blank">
+                <i class="fa-solid fa-donut"></i> <span style="font-size: 20px;">🍩</span> Donut SMP | Community
+            </a>
+            <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=mimisha2907@gmail.com&currency_code=USD" class="btn btn-paypal" target="_blank">
+                <i class="fa-brands fa-paypal"></i> PayPal Support
+            </a>
+        </div>
+    </div>
+
+    <div id="ui-controls">
+        <button id="toggle-play">⏸</button>
+        <input type="range" id="v-slider" min="0" max="1" step="0.05" value="0">
+    </div>
+
+    <script>
+        const video = document.getElementById('main-video');
+        const playBtn = document.getElementById('toggle-play');
+        const cursor = document.getElementById('custom-cursor');
+        const canvas = document.getElementById('particles-canvas');
+        const tiltBox = document.getElementById('tilt-box');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particles = [];
+        const mouse = { x: -100, y: -100 };
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 1.5;
+                this.baseX = this.x;
+                this.baseY = this.y;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            update() {
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < 120) {
+                    this.x -= (dx / distance) * 4;
+                    this.y -= (dy / distance) * 4;
+                } else {
+                    this.x += (this.baseX - this.x) * 0.05;
+                    this.y += (this.baseY - this.y) * 0.05;
+                }
+            }
+        }
+
+        function init() {
+            particles = [];
+            for (let i = 0; i < 100; i++) particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.draw(); p.update(); });
+            requestAnimationFrame(animate);
+        }
+
+        init(); animate();
+
+        document.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX; mouse.y = e.clientY;
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            const xAxis = (window.innerWidth / 2 - e.clientX) / 30;
+            const yAxis = (window.innerHeight / 2 - e.clientY) / 30;
+            tiltBox.style.transform = `rotateY(${-xAxis}deg) rotateX(${yAxis}deg)`;
+        });
+
+        document.addEventListener('mousedown', (e) => {
+            const wave = document.createElement('div');
+            wave.className = 'click-wave';
+            wave.style.left = e.clientX + 'px';
+            wave.style.top = e.clientY + 'px';
+            document.body.appendChild(wave);
+            setTimeout(() => wave.remove(), 600);
+        });
+
+        playBtn.onclick = () => {
+            if (video.paused) { video.play(); video.muted = false; playBtn.innerHTML = '⏸'; }
+            else { video.pause(); playBtn.innerHTML = '▶'; }
+        };
+
+        document.getElementById('v-slider').oninput = (e) => { video.volume = e.target.value; video.muted = false; };
+    </script>
+</body>
+</html>
